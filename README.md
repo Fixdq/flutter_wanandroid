@@ -5,6 +5,15 @@
 有关项目最新动态，可以关注App内第一条Hot Item信息。
 
 ### 运行本项目注意！！！
+本项目运行环境要求!
+```
+ps：作者Futter版本
+[✓] Flutter (Channel beta, v1.6.3, locale zh-Hans-CN)
+
+ps：以上是最低支持版本，如不是，请自行升级！
+
+flutter upgrade
+```
 由于在国内访问Flutter有时可能会受到限制，clone项目后，请勿直接packages get，建议运行如下目录行：
 ```
 export PUB_HOSTED_URL=https://pub.flutter-io.cn  
@@ -13,7 +22,22 @@ flutter packages get
 flutter run --release
 ```
 
+### [开源详情！！！](https://github.com/Sky24n/flutter_wanandroid/issues/66)  
+一、Flutter常用工具类库全面升级 [flustars](https://github.com/Sky24n/flustars)
+1. SpUtil 全面支持读取对象，对象列表。无需通过SpHelper二次转换。
+2. ScreenUtil 兼容横/纵屏适配。  
+3. DirectoryUtil 新增文件目录工具类。   
+   
+二、Flutter全局屏幕适配库 [auto_size](https://github.com/flutterchina/auto_size)   
+
+三、基础组件库[base_library](https://github.com/Sky24n/FlutterRepos)，方便多个项目共用。  
+另外附送[login_demo](https://github.com/Sky24n/FlutterRepos/tree/master/login_demo)示例！关于App启动时，未登录跳登录页，已登录进主页。
+
 ### [更新说明](./CHANGELOGS.md)
+### v0.2.2 (2019.07.02)
+1.基础库升级。  
+2.修复OPPO R15详情页问题。  
+3.一些优化~。
 
 ### v0.2.1 (2019.05.08)
 1.新增登录/注册。  
@@ -49,16 +73,11 @@ flutter run --release
 <img src="https://gitee.com/uploads/images/2019/0506/004900_5e0bd537_506864.png" width="240">  <img src="https://raw.githubusercontent.com/Sky24n/LDocuments/master/AppImgs/flutter_wanandroid/splash_video.gif" width="240">  <img src="https://raw.githubusercontent.com/Sky24n/LDocuments/master/AppImgs/flutter_wanandroid/upgrade_download.gif" width="240">    
 
 ### 安卓Apk
-如需体验版本升级功能，可以下载旧版apk。  
-  
-点击下载  [新版v0.2.1](https://raw.githubusercontent.com/Sky24n/LDocuments/master/AppStore/flutter_wanandroid.apk)  ---  [旧版v0.2.0](https://raw.githubusercontent.com/Sky24n/LDocuments/master/AppStore/flutter_wanandroid_old.apk)  
+点击下载  [新版v0.2.2](https://raw.githubusercontent.com/Sky24n/LDocuments/master/AppStore/flutter_wanandroid.apk)   
    
-扫码下载 新版v0.2.1  
+扫码下载 新版v0.2.2  
 ![flutter_wanandroid](https://raw.githubusercontent.com/Sky24n/LDocuments/master/AppImgs/flutter_wanandroid/qrcode.png)
   
-扫码下载 旧版v0.2.0    
-![flutter_wanandroid](https://raw.githubusercontent.com/Sky24n/LDocuments/master/AppImgs/flutter_wanandroid/qrcode1.png)
-
 ### iOS：请自行clone项目代码运行。
 
 ## App目录结构
@@ -310,7 +329,8 @@ ScreenUtil.getInstance().getHeight(size); //返回根据屏幕高适配后尺寸
 ScreenUtil.getInstance().getWidthPx(sizePx); //sizePx 单位px
 ScreenUtil.getInstance().getHeightPx(sizePx); //sizePx 单位px
 ScreenUtil.getInstance().getSp(fontSize); //返回根据屏幕宽适配后字体尺寸
-
+  
+double adapterSize = ScreenUtil.getInstance().getAdapterSize(100);
 ```
 方案二、依赖context
 ```dart
@@ -323,6 +343,8 @@ ScreenUtil.getScreenH(context); //屏幕 高
 ScreenUtil.getScaleW(context, size); //返回根据屏幕宽适配后尺寸（单位 dp or pt）
 ScreenUtil.getScaleH(context, size); //返回根据屏幕高适配后尺寸 （单位 dp or pt）
 ScreenUtil.getScaleSp(context, size) ;//返回根据屏幕宽适配后字体尺寸
+  
+double adapterSize = ScreenUtil.getAdapterSizeCtx(context, 100)
 ```
 ### Flutter 数据存储  [SpUtil](https://github.com/Sky24n/flustars)
 单例"同步" SharedPreferences 工具类。  
@@ -340,8 +362,7 @@ ScreenUtil.getScaleSp(context, size) ;//返回根据屏幕宽适配后字体尺�
     city.name = "成都市";
     SpUtil.putObject("loc_city", city);
   
-    Map dataStr = SpUtil.getObject("loc_city");
-    City hisCity = dataStr == null ? null : City.fromJson(dataStr);
+    City hisCity = SpUtil.getObj("loc_city", (v) => City.fromJson(v)); 
     print("thll Str: " + (hisCity == null ? "null" : hisCity.toString()));
   
     /// save object list example.
@@ -351,11 +372,7 @@ ScreenUtil.getScaleSp(context, size) ;//返回根据屏幕宽适配后字体尺�
     list.add(new City(name: "北京市"));
     SpUtil.putObjectList("loc_city_list", list);
   
-    List<Map> dataList = SpUtil.getObjectList("loc_city_list");
-    List<City> _cityList = dataList?.map((value) {
-      return City.fromJson(value);
-    })?.toList();
-
+    List<City> _cityList = SpUtil.getObjList("loc_city_list", (v) => City.fromJson(v));
     print("thll List: " + (_cityList == null ? "null" : _cityList.toString()));
 ```
 
@@ -437,6 +454,10 @@ Pub &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: [Sky24n](https://pub.flutter-io.cn/packages?
 Email &nbsp;&nbsp;: 863764940@qq.com  
 ⭐⭐⭐ 如果您觉得本项目不错的话，来个star支持下作者吧! ⭐⭐⭐  
 关于项目任何问题请提交[issues](https://github.com/Sky24n/flutter_wanandroid/issues)，私发QQ邮件将不再回复～
+
+Flutter全局屏幕适配 [auto_size](https://github.com/flutterchina/auto_size)  
+  
+[![GitHub stars](https://img.shields.io/github/stars/flutterchina/auto_size.svg?style=social&label=Star)](https://github.com/flutterchina/auto_size) [![GitHub forks](https://img.shields.io/github/forks/flutterchina/auto_size.svg?style=social&label=Fork)](https://github.com/flutterchina/auto_size) [![GitHub watchers](https://img.shields.io/github/watchers/flutterchina/auto_size.svg?style=social&label=Watch)](https://github.com/flutterchina/auto_size)  
 
 Flutter版玩安卓 [flutter_wanandroid](https://github.com/Sky24n/flutter_wanandroid)  
   
